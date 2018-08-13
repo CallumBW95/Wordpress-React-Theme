@@ -46,24 +46,6 @@ class Menu extends Component {
       });
   }
 
-  menuArrayToElements(array) {
-    let element = Object.values(array).map(({ title, slug, order, children }) => {
-      let child = children.length == 0 ? '' : Object.values(children).map(({ title, slug, order }) => {
-        return <li key={order}><Link to={slug}>{title}</Link></li>
-      });
-      child = (<ul>{child}</ul>);
-
-      return (
-        <li key={order}>
-          <Link to={slug}>{title}</Link>
-          {children ? child : ''}
-        </li>
-      )
-    });
-
-    return element;
-  }
-
   render() {
     let menu = this.state.menu ? this.menuArrayToElements(this.state.menu) : '';
 
