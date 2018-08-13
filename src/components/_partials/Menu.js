@@ -15,7 +15,42 @@ class Menu extends Component {
   }
 
   urlToSlug(url) {
-    return url.replace(/(http)(|s)(:\/\/)(www.|)[a-z]*(.com|)/g, '').replace(/\//g, '');
+    return url.replace(/(http)(|s)(:\/\/)(www.|)[a-z]*(.com|.co.uk|)/g, '').replace(/\//g, '');
+  }
+
+  menuArrayToElements(array) {
+    let element = Object.values(array).map(({ title, slug, order, children }) => {
+      let child = this.menuChildrenElements(children);
+
+      return (
+        <li key={order}>
+          <Link to={slug}>{title}</Link>
+          {children.length != 0 ? child : ''}
+        </li>
+      );
+    });
+
+    return element;
+  }
+
+  menuChildrenElements(childEl) {
+    let child;
+
+    if (childEl && childEl.length != 0){
+      child = Object.values(childEl).map(({ title, slug, order, children }) => {
+        let cChild = this.menuChildrenElements(children);
+        
+        return (
+          <li key={order}>
+            <Link to={slug}>{title}</Link>
+            {children && children.length != 0 ? cChild : ''}
+          </li>
+        );
+      });
+      child = (<ul>{child}</ul>);
+    }
+
+    return child;
   }
 
   componentDidMount() {
